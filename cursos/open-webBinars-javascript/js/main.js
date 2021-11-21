@@ -72,4 +72,12 @@ console.log(colors1[i]);
 };
 //ejemplo arrays + bucles
 
-
+const nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+let total = 0;
+for(let i = 0; i < nums.length; i += 1){
+    if ( i % 2 == 0){
+        console.log(i);
+    }
+total += nums[i];
+}
+console.log('El total es: '+ total)
