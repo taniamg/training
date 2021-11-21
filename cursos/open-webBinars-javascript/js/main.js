@@ -105,7 +105,16 @@ console.log(title2);
      const tarea = tareas[i];
      const li = document.createElement('li');
      li.textContent = tarea;
+     li.id ='elemento_'+i;
      toDoList.appendChild(li);
  }
+ setTimeout(function(){
+    const elementoAEliminar = document.getElementById('elemento_2');
+ toDoList.removeChild(elementoAEliminar);  
+ },2000);
+ /*recibe una funcion y el tiempo que quero que pase para que se ejecute dicha funcion, se modificara el parrafo, creara las tareas y cuando pasen dos segundos eliminará la tarea 2*/
  
+
+ 
+
 
