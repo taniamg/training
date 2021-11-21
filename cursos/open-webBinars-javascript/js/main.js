@@ -95,3 +95,17 @@ console.log(title2);
  title2[0].style.color = 'red';
  title2[0].style.backgroundColor = 'yellow';
 
+ const tareas = [
+     'hacer la colada',
+     'prepar la cena',
+     'tirar la basura'
+ ];
+ const toDoList = document.querySelector('#todo_list');
+ for (let i = 0; i< tareas.length; i += 1){
+     const tarea = tareas[i];
+     const li = document.createElement('li');
+     li.textContent = tarea;
+     toDoList.appendChild(li);
+ }
+ 
+
