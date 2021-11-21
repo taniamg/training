@@ -81,3 +81,17 @@ for(let i = 0; i < nums.length; i += 1){
 total += nums[i];
 }
 console.log('El total es: '+ total)
+
+//DOM(Document Object Model)
+//Nodos:cada elemento de la página web
+//selectores: acceder, manipular el contenido de esos nodos 
+//en el inspector salen todos los atributos
+
+const title = document.getElementById('title');
+console.log(title.innerText);
+
+const title2 = document.getElementsByTagName('h1');
+console.log(title2);
+ title2[0].style.color = 'red';
+ title2[0].style.backgroundColor = 'yellow';
+
