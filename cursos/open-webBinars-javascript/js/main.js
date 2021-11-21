@@ -95,26 +95,72 @@ console.log(title2);
  title2[0].style.color = 'red';
  title2[0].style.backgroundColor = 'yellow';
 
- const tareas = [
-     'hacer la colada',
-     'prepar la cena',
-     'tirar la basura'
- ];
- const toDoList = document.querySelector('#todo_list');
- for (let i = 0; i< tareas.length; i += 1){
-     const tarea = tareas[i];
-     const li = document.createElement('li');
-     li.textContent = tarea;
-     li.id ='elemento_'+i;
-     toDoList.appendChild(li);
- }
- setTimeout(function(){
+
+ /*setTimeout(function(){
     const elementoAEliminar = document.getElementById('elemento_2');
  toDoList.removeChild(elementoAEliminar);  
- },2000);
- /*recibe una funcion y el tiempo que quero que pase para que se ejecute dicha funcion, se modificara el parrafo, creara las tareas y cuando pasen dos segundos eliminará la tarea 2*/
- 
+ },2000);*/
 
+ /*recibe una funcion y el tiempo que quero que pase para que se ejecute dicha funcion, se modificara el parrafo, creara las tareas y cuando pasen dos segundos eliminará la tarea 2*/
+
+//eventos
+const button = document.getElementById('change_color')
+function random(numeroMaximo){
+    return Math.round(Math.random()* numeroMaximo);
+}
+button.addEventListener('click', function(evento)  {
+    const randomColor = [
+        random(255),
+        random(255),
+        random(255),
+    ];
+    document.body.style.backgroundColor = "rgb( " + randomColor[0]  +" , " + randomColor[1] + "," + randomColor[2] + 
+    ") ";
+ console.log(randomColor);
+});
+
+//toDo list
+function createTaskElement(elementToAppend, title){
+    const li = document.createElement('li');
+    li.textContent = title;
+    elementToAppend.appendChild(li);
+}
+const tasks = [
+    {title: 'hacer la colada'},
+    {title: 'hacer la cena'},
+    {title: 'tirar la basura'},
+];
+
+const toDoListElement = document.querySelector('#todo_list');
+
+for (let i = 0; i< tasks.length; i += 1){
+    const task = tasks[i];
+    createTaskElement(toDoListElement, task.title);
+}
+
+const buttonToCreate = document.getElementById('create_button');
+buttonToCreate.addEventListener('click', function(){
+    const inputValue = document.getElementById('task_title');
+
+    if (inputValue.value !== ''){
+        createTaskElement(toDoListElement, inputValue.value);
+    }else {
+        alert('no puedes guardar una lista vacia');
+    }
+    inputValue.value = '';
+});
+
+const inputElement = document.getElementById('task_title');
+inputElement.addEventListener('input', function(ev){
+    const inputValue = ev.target.value;
+    const regex = /^[A-Z]/;
+    if (regex.test(inputValue) || inputValue === ''){
+        console.log(this);
+        this.style.backgroundColor = 'lightgreen';
+    } else {
+        this.style.backgroundColor = 'tomato';
+    }
+});
  
 
 
