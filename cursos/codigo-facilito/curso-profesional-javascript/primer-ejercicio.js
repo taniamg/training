@@ -520,3 +520,186 @@ e.saludar.apply({},['1','2']);
 
 let nuevaFuncion = e.saludar.bind({},'1','2');
 nuevaFuncion();
+
+/*
+en javascript las clases no existen, es un lenguaje orientado a objetos pero se basa en prototipos
+*/
+//CLASES
+//sintaxis alternativa para definir objetos
+//se usa la palabra reservada class
+class Curso1{
+    title = 'hola';
+
+    inscribir(nombre){
+        this.nombre = nombre;
+    }
+}
+let c = new Curso1();
+c.inscribir('tania');
+
+console.log(c.nombre);
+
+
+//ALCANCE DE PROPIEDADES
+//las propiedades y los metodos de una clases son unicos por defectos. 
+// nueva sintaxis #title
+//solo pueden ser utilizados dentro de las clases
+
+class example{
+    #title ='Java';
+    constructor(){
+        this.#bienvenida();
+    }
+    #bienvenida(){
+        console.log('Bienvenido al curso' + this.#title);
+    }
+}
+let Java = new example();
+
+//METODO CONSTRUCTOR
+/*
+metodo especial, este se ejecua de manera automatica cuando instaciamos un nuevo objeto de nuestra clase.
+sintaxis : constructor(){}
+en una clase solo puede haber un constructor
+puede recibir parametros que se asignal al usar el metodo new
+tambien cuenta con arguments
+
+*/
+class Ludo{
+    constructor(titulo,color='yellow'){
+        this.titulo = titulo;
+        this.color = color;
+        console.log(arguments);
+
+    }
+}
+new Ludo('curso punto creativo');
+
+//HERENCIA CLASES
+/*
+permite que un objeto herede los metodos y las propiedades de un objeto al que llama padre, a partir de una copia de dicho padre podremos modificar y añadir o quitar propiedades en el objeto que conocemos como hijo
+cada descendiente hereda de los ascendientes
+para definir la herenia se usa la palabra reservada EXTENDS despues de declarar la nueva clase y seguida de la clase que hereda: class Amind extends Human {}
+se hereda cualquier metodo o propiedad que no sea privado
+funciona tambien con los metodos
+*/
+
+class Human{
+    especie = 'Humano';//propiedad
+    respirar(){console.log('Inhala')}//metodo
+}
+class Admin extends Human{}
+
+let admin = new Admin();
+console.log(admin.especie);
+admin.respirar();
+
+/*
+se asocia a la reutilizacion de codigo
+*/
+/*
+ejemplo codigo a refactorizar conla herencia
+class Vimeo{
+    play(){ this.video.play();}
+    duration{ return this.video.duration / 100;}
+    open{ this.redirecToVimeo(this.video);}
+}
+class YouTube{
+    play(){ this.video.play();}
+    duration{ return this.video.duration / 100;}
+    open{ this.redirecToYouTube(this.video);}
+}
+
+class Player {
+    play(){ this.video.play();}
+    duration {return this.video.duration / 100; }
+}
+
+class Vimeo extends Player{
+    
+    open{ this.redirecToVimeo(this.video);}
+}
+class YouTube extends Player{
+    
+    open{ this.redirecToYouTube(this.video);}
+}
+*/
+
+//  buildt in objects, 
+/*
+en algunos casos sera necesario sobrescribir la funcionalidad heredada de la clase base
+*/
+
+class UserNew { 
+     constructor(name){
+        this.name = name;
+    }
+    saludar(){console.log('hola usuario');}
+}
+class Admin1 extends UserNew{
+  constructor(name){
+      super(name);
+  }
+    saludar(){
+        super.saludar();//este metodo llamara al de NewUser, solo se tiene acceso en herencias 
+        console.log('Hola soy Admin1');//con este solo se sobreescribiria saludar()
+    }
+}
+let admin2 = new Admin1('pepito');
+admin2.saludar();
+console.log(admin2.name)
+
+//METODOS ACCESORES
+/*
+encapsular.
+esconder las propiedades del objeto y ofrecer metodos para leerlos y modificarlos sin que se acceda especificamente a la propiedad
+GET => se usan para obtener o leer los datos de una propiedad
+se diferencian de otros metodos porque al llamarlos no necesitamos los parentesis para ejecutarlos
+SET => para asignar un valor nuevo a algunas de las propiedades. se diferencias de los demas en que son llamados cuando utilizamos el operador de igualdad
+
+*/
+
+class Socio {
+    get nombre(){return 'Tania';}
+    set nombre(nombre){console.log(nombre);}
+}
+let socio = new Socio();
+
+console.log(socio.nombre);//getter
+socio.nombre = 'Lucia';//setter =>le indica a js que debe buscar un setter con ese identificador y se envia el valor 
+
+class Socio1 {
+    get nombre(){return this._nombre.toUpperCase();}
+    //this._nombre.chartAt(0).toUpperCase() + this._nombre.slice(1) => pasa la primera posicion (0) a mayuscula y le suma desde la posicion 1 = Lucia
+    set nombre(nombre){
+        if(typeof nombre !== 'string') throw new Error('No es una cadena')
+        this._nombre = nombre;}
+}
+let socio1 = new Socio1();
+socio1.nombre = 'lucia';//setter
+console.log(socio1.nombre);//getter
+
+//METODOS Y PROPIEDADES ESTATICOS
+
+class Api {
+    static ENDPOINT = 'localhost : 300'
+    static get(){ console.log('soy un método estático');}
+}
+Api.get();// llamar al metodo desde la clase sin instanciar un objeto
+console.log( Api.ENDPOINT);// propiedad
+/*
+Las funciones estaticas son funciones de utilidad como crear o clonar objetos
+Mientras que las propiedades estaticas son utiles para cachear, almacenar informacion fija o cualquier dato que no necesita ser replicado 
+
+con un metodo estatico podemos acceder a otros metodos estaticos usando la propiedad this
+*/
+
+class Gato{
+    permission = 0;
+    static admin(){
+        let gato = new this();
+        gato.permission = 5;
+        return gato;
+    }
+}
+console.log(Gato.admin())
