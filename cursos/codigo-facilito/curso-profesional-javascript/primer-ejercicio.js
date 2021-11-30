@@ -117,7 +117,7 @@ console.log(edad);//20
 //por referencia:
 let edades = [20];
 console.log(edades);
-function modificador(edades){
+function modificador1(edades){
     edades [0]= 25;
     console.log ('dentro de la funcion: '+ edades);// 25
 }
@@ -159,13 +159,13 @@ function executor(funcion) {
     funcion();
     
 }
-function decirHola(){
+function decirHola1(){
     console.log('Hola');
 }
- executor (decirHola);// envio la funcion no la ejecuto, se la delego a otra.
+ executor (decirHola1);// envio la funcion no la ejecuto, se la delego a otra.
 
 
- function sumaTodos(){
+ function sumaTodos1(){
      let suma = 0;
      for (let i = 0; i < arguments.length; i++){
          suma += arguments [i]}
@@ -176,7 +176,7 @@ function decirHola(){
      return Array.from(arguments).reduce((acc,argument) => argument + acc,0);
  }
 
- console.log(sumaTodos(1, 2, 3, 4, 5));
+ console.log(sumaTodos1(1, 2, 3, 4, 5));
 
  //funcion que retorna otra
  function build(){
@@ -472,7 +472,7 @@ let objeto1 = {
 }
 objeto1.demo();
 
-function demo() {
+function demo1() {
     console.log(this);
 }
 let object = {
@@ -703,3 +703,267 @@ class Gato{
     }
 }
 console.log(Gato.admin())
+
+//PROTOTYPES
+/*
+es un obj. asociado a cualquier funcion donde esta incluye una propiedad con un objeto qu epodemos usr para compartir codigo.
+cualqier funcion tiene una propiedd prototype incluida.
+
+*/
+function Course0 (){
+    Course0.prototype.inscribir = function(){
+        console.log('hola!!');
+    }
+}
+let course = new Course0();
+course.abandonar = function(){
+    console.log('abandonar');
+};//pertenece al objeto nuevo
+course.inscribir();//pertenece  a la funcion constructora
+console.log(course);
+/*
+new enlaza el objeto prototype de la la funcion cob la propiedad __proto__ de la funcion constructora
+
+*/
+
+/*
+TEORIA PROTOTYPES
+
+Conceptos de prototipos
+Vamos a hacer un repaso de los conceptos que hemos aprendido en este tema y que son relevantes cuando hablamos de prototipos en JavaScript.
+
+Tenemos la propiedad prototype, todas las funciones tienen esta propiedad y apunta al prototype object.
+
+El prototype object es el objeto al que podemos asignar métodos y propiedades que queremos compartir en el prototype chain o cadena de prototipos.
+
+Cuando creamos un objeto de una función usando new, se asigna una propiedad proto que apunta al prototype de la función con la que se creó el objeto, también conocida como función constructora. Esto quiere decir que podemos decir que proto apunta al prototype de la función constructora.
+
+El prototype chain o la cadena de prototipos hace referencia al enlace que se crea entre prototipos que tienen su propio prototipo, que tienen su propio prototipo. Cuando buscamos un método o una propiedad en un objeto, se buscará inicialmente en el objeto y luego en la cadena de prototipos.
+
+El último eslabón de la cadena de prototipos es Object.prototype, este objeto es usado para definir métodos que compartan todos los objetos del lenguaje, ya que eventualmente la cadena de prototipos termina aquí.
+
+El prototipo de una función constructora apunta por defecto al prototype de Object, aunque esto puede ser modificado.
+
+Un dato interesante es que cualquier objeto creado con la notación JSON enlaza su propiedad proto al prototype de la función constructora Object.
+*/
+
+function Course1(){}
+
+Course1.prototype.inscribir = function(){
+    console.log('Ya llegué');
+}
+Course1.prototype.conteo = 0;
+
+
+let javaScript = new Course1();
+javaScript.__proto__.conteo += 1;
+let ruby = new Course1();
+ruby.__proto__.conteo += 1;
+javaScript.inscribir();
+ruby.inscribir();
+
+console.log(Course1.prototype.conteo);
+//este metodo esta siendo compartido desde el prototype, no le pertenece a // ninguno de los objetos y no es duplicado ni copiado, se mantiene en el prototipo
+//podemos agregar funciones nuevas al prototipo
+
+/*
+PROGRAMACIÓN ASINCRONA
+
+Qué es la programación asíncrona
+En un lenguaje de programación asíncrono como JavaScript, las tareas pueden ejecutarse secuencialmente, esto significa que podemos indicar que algunas tareas se pasen a segundo plano y esperen a su turno para ser reanudadas y ejecutadas.
+
+Esta característica del lenguaje existe para mejorar el rendimiento del mismo, porque nos permite aprovechar al máximo las capacidades del equipo en el que se está ejecutando nuestro código.
+
+Por lo general las tareas que se esperan sean más tardadas, o que necesiten esperar respuesta de algún otro elemento del sistema, son candidatas a ser delegadas a este proceso de espera y ejecución.
+
+JavaScript es un lenguaje de ejecución sobre un solo hilo, esto significa que sólo puede ejecutar una tarea a la vez. Cuando una operación tarda demasiado o está esperando la respuesta de otra, decimos que bloquea las demás instrucciones, precisamente porque JavaScript no puede ejecutar dos a la vez.
+
+Para solucionar esto, JavaScript introduce el event loop, o ciclo de eventos. El event loop se compone de dos componentes principales, una cola de mensajes y un ciclo que se encuentra iterando esta cola de mensajes. La programación asíncrona en JavaScript funciona empujando ciertas operaciones a esta cola de actividades, para que no bloqueen la ejecución de código mientras terminan, el trabajo del event loop es estar preguntando las operaciones de la cola de actividades si ya han finalizado, y cuando lo hacen, reanuda la ejecución de dicha operación, la recupera por así decirlo.
+
+Para que todo esto funcione, necesitas una forma de delegar ciertas operaciones a esta cola, y una forma de saber cuándo estas operaciones han terminado, para hacerlo JavaScript introdujo inicialmente el concepto de callbacks, y después el de promesas, finalmente a la sintaxis se introdujeron las funciones asíncronas, todos estos conceptos están diseñados para que esta comunicación entre el event loop, la cola de actividades y tu código, suceda.
+
+Veamos en la práctica como hacerlo.
+*/
+
+/*
+un callback es una funcion que se pasa como argumento a una función asincrona
+
+*/
+//npm install request=> esta obsoleto
+/*let request = require('request');
+
+request('https://www.google.com', function(){
+    console.log('termine la peticion');
+});*/
+
+//PROMESAS
+/*
+SURGE COMO ALTERNATIVA A LA SINTAXIS DE CALLBACKS
+es mucho mas expresiva, concisa y facil de entender, sobre todo cuando se escriben varias peticiones asincronas en secuencia.
+callback hell => funcion dentro de una y denrro de otra y de otra, son dificiles de leer.
+
+*/
+//npm install request-promise
+/*let request = require('request-promise');
+
+request('https://www.google.com').then( function(){
+    console.log('termine la peticion');
+});*/
+
+//FUCIONES ASINCRONAS
+/*
+Funciones asíncronas
+Cuando programamos en JavaScript, constantemente trabajamos con operaciones asíncronas como solicitudes a un servicio web, cálculos, eventos, etc.
+
+La complejidad de las operaciones asíncronas es que no se sabe cuándo van a terminar, por lo que debe existir un mecanismo que nos informe sobre si una tarea ha sido completada o no, qué resultado produjo y si se completó con éxito o hubo un error, y en caso de que haya habido un error, de qué error se trata.
+
+Para solucionar esto se han introducido distintas estrategias, objetos y estructuras que permitan trabajar en un flujo de operaciones asíncronas, inicialmente teníamos los callbacks, funciones que se asignaban y eran llamadas cuando la operación asíncrona había retornado. Eventualmente se introdujeron las promesas, objetos pensados para valores asíncronos con funcionalidad adicional pensada precisamente para trabajar con 1 o varias operaciones asíncronas en un programa.
+
+Las promesas, como aprendimos antes, introdujeron incontables mejoras por sobre los callbacks, sin embargo, la sintaxis puede parecer confusa y poco legible, además de que es un concepto que puede ser desafiante para nuevos desarrolladores de JavaScript.
+
+En versiones más nuevas del lenguaje se introdujo el concepto de funciones asíncronas, dentro de las que trabajar con promesas se vuelve más simple con el uso de la palabra reservada await.
+
+En este bloque conocerás los detalles de las funciones asíncronas, la sintaxis, cómo funcionan y cómo puedes usarlas para manejar operaciones asíncronas, como podrás ver más adelante, esto significará que el código de manejo de operaciones asíncronas se vuelve más expresivo y sencillo, sin perder por supuesto la funcionalidad correspondiente.
+
+*/
+// ESTAS SIEMPRE DEVUELVEN UNA PROMESA SIN IMPORTA EL VALOR DEL CUERPO DE LA FUNCION NI LO QUE RETORNEN
+
+/*
+lo unico que diferencia una funcion asincrona de una normal es el uso de await
+dentro del cuerpo de la funcion
+
+async retorna una promesa ya resuelta con el resultado que devolvera esa funcion
+return promise.resolve(valor1) +  (valor2)
+con async la sintaxis de promise es implicita y aunque no se escriba el interprete lo ejecuta como tal.
+
+*/
+//await
+/*
+hace que la ejecucion del codigo espere a que una promesa sea resuelta evitando que escribas then o creando funciones anonimas.
+
+*/
+(async function(){
+
+let promesa = new Promise((resolve, reject)=>{
+    setTimeout(resolve,400,5)
+});
+console.log(promesa);
+})();
+
+// con await esto no es necesario :promesa.then( (resultado)=> {console.log(resultado)})
+
+//await y fetch
+
+async function showGitHubInfo(){
+    let response = await fetch('https://api.github.com/users/taniamg/repos');
+    let repos = await response.json();
+    console.log(repos);
+}
+showGitHubInfo();
+//await marca las peticiones asincronas
+//parra manejar error se usa catch
+
+
+//modulos
+//import def =?
+
+//GENERADORES E ITERADORES
+//CUALQUIER OBJETO  QUE IMPLEMENTE UN METODO NEXT, QUE RETORNE UN OBJETO
+//CON UNA PROPIEDAD VALUE, UNA PROPIEDAD DONE E IMPLEMENTE UN PROTOCOLO POR LO QUE ES UN ITERADOR
+
+let iterador = {
+    currentValue:1,
+    next(){
+        let result = {value: null, done: false};
+
+        if (this.currentValue > 0 && this.currentValue <= 5){
+            result = {value: this.currentValue, done:false}
+            this.currentValue += 1;
+        }else {
+            result = {done: true};
+        }
+        return result;
+        
+    }
+};
+console.log(iterador.next());
+console.log(iterador.next());
+console.log(iterador.next());
+console.log(iterador.next());
+console.log(iterador.next());
+console.log(iterador.next());
+//iterador perezoso
+setTimeout(()=> console.log(iterador.next()), 5000)
+
+
+//CARACTERES ESPECIALES
+//ESCAPIN => \caracter a ignorar\
+ let  a = 'hola ';
+ let b = 'mundo';
+ console.log(a.concat(b));
+
+ //interpolacion Template Literals => Template Strings
+let nombres = 'tania'
+ let template = `Hola ${nombres}, ¿cómo estás?`;
+ console.log(template);
+
+ // padStart padEnd
+
+ //comparacion de cadenas.
+ console.log('A'.localeCompare('z'));
+ console.log('a'.localeCompare('b'));
+ console.log('A'.localeCompare('a'));
+ console.log('b'.localeCompare('b'));
+ console.log('A'.localeCompare('z'));
+ 
+ //subcadena y caracteres
+ let cadena = 'hola';
+ for (const caracter of cadena ){
+     console.log(caracter);
+ }
+
+ let cadenas = 'HolaMundo';
+ console.log(cadenas.substring(0,4));//es igual que slice salvo en que este no reordena en caso de que e¡sea (6,4) y si es un numero negatico no lo ignora sino qu eempieza desde el final.
+
+ //BUSQUEDA
+ //indexOf => 
+ let cadenita = 'hola tania';
+ if (cadenita.indexOf('tania') >0) console.log('encontrado');
+
+ //includes => retorna true si se encuentra la cadena o false sino lo encuentra
+
+//lastIndexOf
+//startsWith endsWith
+let link = 'https://codigofacilito.com';
+if(link.startsWith('https:')) console.log('es un link seguro');
+
+//cadenas y arreglos
+
+let texto =' estoy aprendiendo javascript y html';
+let palabras = texto.split(' ');
+console.log(palabras);
+console.log(palabras.join(' '));
+
+function filtroDeMarcas(str){
+    let marcas =['codigoFacilito'];
+    let palabrasFiltradas = str.split(' ').map(
+      palabra => {
+          return marcas.includes(palabra) ? 'xxx' : palabra
+      } 
+    );
+    return palabrasFiltradas.join(' ');
+}
+console.log(filtroDeMarcas(texto)) ;
+
+//trim => quita espacio en blanco delante y detras
+console.log(' hola '.trim());
+//trimStar trimEnd
+
+//repeat => retorna una cadena con la principal repetida 'n' cantidad de veces
+console.log(' hola '.repeat(3));
+//replace => retorna una nueva cadena con el reemplazo ejecutado
+console.log(' hola '.replace('hola','adios'));
+
+//unicode
+
+//planos unicode
